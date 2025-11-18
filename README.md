@@ -7,6 +7,8 @@ This repository contains a complete, modular, production‑grade pipeline that l
 
 The project trains a classifier (XGBoost) to predict the probability that you will like a new song based on audio features, genre embeddings, and historical preferences. It also produces visualizations, PCA embeddings, feature importance plots, balanced datasets, and a fully reproducible recommendation pipeline.
 
+For a more in-depth look at the project, please check the following Google Collab: [Spotify recommender colab](https://colab.research.google.com/drive/1YhSFuuFKE66bT0vQ3XHLxExes16yGWG5?usp=sharing)
+
 ---
 
 # 📖 Project summary
