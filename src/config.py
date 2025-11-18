@@ -1,9 +1,9 @@
 import os
 
 # Spotify Credentials (Load from environment variables for security)
-SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID", "YOUR_CLIENT_ID_HERE")
-SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET", "YOUR_CLIENT_SECRET_HERE")
-SPOTIFY_USER_ID = os.getenv("SPOTIFY_USER_ID", "YOUR_USER_ID")
+SPOTIFY_CLIENT_ID = os.getenv("SPOTIFY_CLIENT_ID")
+SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
+SPOTIFY_USER_ID = os.getenv("SPOTIFY_USER_ID")
 REDIRECT_URI = 'http://localhost:8888/callback'
 
 # Genre Mapping from your notebook
