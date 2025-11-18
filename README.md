@@ -54,8 +54,7 @@ spotify-recommender/
 │   ├── spotify_client.py      # Spotify API wrapper
 │   └── visualization.py       # PCA plots, importance plots, correlations
 ├── main.py                    # Full execution pipeline
-├── requirements.txt
-└── .env.example               # API placeholders
+└── requirements.txt
 ```
 
 The `src/` directory is structured like a **real ML codebase** rather than a monolithic notebook.
