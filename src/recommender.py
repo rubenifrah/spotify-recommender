@@ -1,8 +1,21 @@
 import pandas as pd
+from typing import List, Any
+from sklearn.preprocessing import StandardScaler
 
-def get_recommendations(model, scaler, full_df, training_df, feature_cols, top_n=20):
+def get_recommendations(model: Any, scaler: StandardScaler, full_df: pd.DataFrame, training_df: pd.DataFrame, feature_cols: List[str], top_n: int = 20) -> pd.DataFrame:
     """
     Predicts liked songs on the unseen portion of the dataset.
+
+    Args:
+        model: Trained model (XGBoost or MLP).
+        scaler: Fitted StandardScaler.
+        full_df: Complete dataframe containing all songs.
+        training_df: Dataframe used for training (to exclude seen songs).
+        feature_cols: List of feature column names used for training.
+        top_n: Number of recommendations to return.
+
+    Returns:
+        pd.DataFrame: Top N recommended songs with 'probability' column.
     """
     # Identify unseen songs (songs in full_df but not in training_df)
     seen_ids = set(training_df['track_id'])

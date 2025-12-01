@@ -1,8 +1,21 @@
 from xgboost import XGBClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import classification_report, confusion_matrix
+import numpy as np
+import pandas as pd
+from typing import Union, Any
 
-def train_xgboost(X_train, y_train):
+def train_xgboost(X_train: np.ndarray, y_train: pd.Series) -> XGBClassifier:
+    """
+    Trains an XGBoost classifier with pre-tuned hyperparameters.
+
+    Args:
+        X_train: Training features.
+        y_train: Training labels.
+
+    Returns:
+        XGBClassifier: Trained model.
+    """
     print("Training XGBoost Classifier...")
     # Parameters taken from your notebook's GridSearch results
     model = XGBClassifier(
@@ -16,7 +29,17 @@ def train_xgboost(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
-def train_mlp(X_train, y_train):
+def train_mlp(X_train: np.ndarray, y_train: pd.Series) -> MLPClassifier:
+    """
+    Trains an MLP Classifier (Neural Network).
+
+    Args:
+        X_train: Training features.
+        y_train: Training labels.
+
+    Returns:
+        MLPClassifier: Trained model.
+    """
     print("Training MLP Classifier (Neural Network)...")
     # Parameters from your notebook (approx best params)
     model = MLPClassifier(
@@ -29,7 +52,15 @@ def train_mlp(X_train, y_train):
     model.fit(X_train, y_train)
     return model
 
-def evaluate_model(model, X_test, y_test):
+def evaluate_model(model: Any, X_test: np.ndarray, y_test: pd.Series) -> None:
+    """
+    Evaluates the model on the test set and prints classification report and confusion matrix.
+
+    Args:
+        model: Trained model (XGBoost or MLP).
+        X_test: Test features.
+        y_test: Test labels.
+    """
     y_pred = model.predict(X_test)
     print("\n--- Model Evaluation ---")
     print(classification_report(y_test, y_pred))

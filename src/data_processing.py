@@ -2,12 +2,20 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
+from typing import Tuple, List, Any
 from .config import FLAT_GENRE_MAP
 
-def load_and_merge_data(kaggle_path, liked_playlist_path):
+def load_and_merge_data(kaggle_path: str, liked_playlist_path: str) -> pd.DataFrame:
     """
     Loads the large Kaggle dataset and the user's liked songs, 
     creates the 'liked' target column.
+
+    Args:
+        kaggle_path: Path to the Kaggle dataset CSV.
+        liked_playlist_path: Path to the user's liked songs CSV.
+
+    Returns:
+        pd.DataFrame: Merged dataframe with 'liked' column.
     """
     df = pd.read_csv(kaggle_path)
     liked_df = pd.read_csv(liked_playlist_path)
@@ -25,10 +33,20 @@ def load_and_merge_data(kaggle_path, liked_playlist_path):
     df = df.drop_duplicates(subset=['track_name', 'artists'])
     return df
 
-def balance_dataset(df, amplification_factor=2, undersample_ratio=2):
+def balance_dataset(df: pd.DataFrame, amplification_factor: int = 2, undersample_ratio: int = 2) -> pd.DataFrame:
     """
+    Balances the dataset using a combination of oversampling and undersampling.
+
     1. Oversamples liked songs by finding artists the user likes.
     2. Undersamples non-liked songs to reduce class imbalance.
+
+    Args:
+        df: Input dataframe.
+        amplification_factor: Factor to increase likelihood of selecting songs from liked artists.
+        undersample_ratio: Ratio of non-liked to liked songs in the final dataset.
+
+    Returns:
+        pd.DataFrame: Balanced dataframe.
     """
     # Oversampling Logic (Probabilistic)
     liked_df = df[df['liked'] == 1]
@@ -53,16 +71,30 @@ def balance_dataset(df, amplification_factor=2, undersample_ratio=2):
     final_not_liked = df[df['liked'] == 0]
     
     n_samples = len(final_liked) * undersample_ratio
+    # Ensure we don't sample more than available
+    n_samples = min(n_samples, len(final_not_liked))
+    
     not_liked_sampled = final_not_liked.sample(n=n_samples, random_state=42)
     
     balanced_df = pd.concat([final_liked, not_liked_sampled]).sample(frac=1, random_state=42).reset_index(drop=True)
     
     return balanced_df
 
-def preprocess_features(df):
+def preprocess_features(df: pd.DataFrame) -> Tuple[np.ndarray, np.ndarray, pd.Series, pd.Series, StandardScaler, List[str]]:
     """
     One-hot encoding and Scaling.
-    Returns: X_train, X_test, y_train, y_test, scaler, feature_columns
+
+    Args:
+        df: Input dataframe.
+
+    Returns:
+        Tuple containing:
+            - X_train_scaled (np.ndarray)
+            - X_test_scaled (np.ndarray)
+            - y_train (pd.Series)
+            - y_test (pd.Series)
+            - scaler (StandardScaler)
+            - feature_columns (List[str])
     """
     # One-Hot Encoding
     df_encoded = pd.get_dummies(df, columns=['main_genre'], prefix='genre')

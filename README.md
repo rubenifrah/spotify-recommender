@@ -9,6 +9,8 @@ The project trains a classifier (XGBoost) to predict the probability that you wi
 
 For a more in-depth look at the project, please check the following Google Collab: [Spotify recommender colab](https://colab.research.google.com/drive/1YhSFuuFKE66bT0vQ3XHLxExes16yGWG5?usp=sharing)
 
+You can also find the original research notebook locally in `notebook/Ruben_IFRAH_final_project_spotify.ipynb`.
+
 ---
 
 # 📖 Project summary
@@ -47,17 +49,31 @@ spotify-recommender/
 │   └── processed/             # Recommendations, figures, PCA HTML
 ├── src/
 │   ├── __init__.py
-│   ├── config.py              # Genre maps, API keys, model config
+│   ├── config.py              # Centralized configuration & paths
 │   ├── data_processing.py     # ETL, balancing, feature engineering
 │   ├── models.py              # Training + evaluation (XGBoost, MLP)
 │   ├── recommender.py         # Final scoring + ranking
 │   ├── spotify_client.py      # Spotify API wrapper
 │   └── visualization.py       # PCA plots, importance plots, correlations
+├── tests/                     # Unit tests
+│   └── test_data_processing.py
 ├── main.py                    # Full execution pipeline
+├── Makefile                   # Automation commands
 └── requirements.txt
 ```
 
 The `src/` directory is structured like a **real ML codebase** rather than a monolithic notebook.
+
+---
+
+# 🛠️ Engineering Practices
+
+This project demonstrates production-grade engineering standards:
+
+- **Type Safety**: All code is fully type-hinted (Python `typing` module) to ensure robustness and catch errors early.
+- **Testing**: Unit tests (`tests/`) ensure data processing logic is correct and prevents regressions.
+- **Automation**: A `Makefile` streamlines installation, testing, and execution.
+- **Code Quality**: Google-style docstrings and modular design for maintainability.
 
 ---
 
@@ -110,6 +126,12 @@ This improves:
 - interpretability  
 - reduces sparsity  
 - avoids overfitting on niche genres  
+
+### 📊 Feature Distribution
+![Feature Distribution](figures/features_distribution.png)
+
+### 📊 Correlation Matrix
+![Correlation Matrix](figures/correlation_matrix.png)
 
 ## 🔹 C. Custom balancing strategy (critical step)
 
@@ -220,6 +242,8 @@ The model reveals **what truly defines my taste**:
 ### 🧩 Storytelling Insight  
 Contrary to the idea that taste is purely sonic, my preferences are strongly tied to **context, culture, and era**.
 
+![Feature Importance](figures/feature_importance.png)
+
 ---
 
 ## 📡 PCA embeddings (2D & interactive 3D)
@@ -231,6 +255,11 @@ The PCA projections reveal:
   2. calm, low‑valence, atmospheric  
 - Non‑liked songs are widely dispersed  
 - A clear linear separation appears in PC1–PC2 space
+
+- A clear linear separation appears in PC1–PC2 space
+
+![PCA 2D](figures/PCA_2D.png)
+![PCA by Genre](figures/PCA_by_genre.png)
 
 Interactive version saved as:
 
@@ -269,7 +298,7 @@ Insights:
 ```bash
 git clone https://github.com/yourusername/spotify-recommender.git
 cd spotify-recommender
-pip install -r requirements.txt
+make install
 ```
 
 ## 2. Configure credentials
@@ -285,13 +314,19 @@ SPOTIFY_USER_ID="your_user"
 ## 3. Add data
 
 Place in `data/raw/`:
-- `spotify_songs_with_audio_features.csv`
-- `all_my_songs.csv`
+- `data.csv` (Kaggle Dataset)
+- `all_my_songs.csv` (Your exported playlist)
 
 ## 4. Run the pipeline
 
+```bash
+make run
 ```
-python main.py
+
+## 5. Run Tests
+
+```bash
+make test
 ```
 
 ---

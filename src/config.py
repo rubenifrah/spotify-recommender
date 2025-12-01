@@ -6,6 +6,16 @@ SPOTIFY_CLIENT_SECRET = os.getenv("SPOTIFY_CLIENT_SECRET")
 SPOTIFY_USER_ID = os.getenv("SPOTIFY_USER_ID")
 REDIRECT_URI = 'http://localhost:8888/callback'
 
+# Data Paths
+DATA_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data')
+RAW_DATA_DIR = os.path.join(DATA_DIR, 'raw')
+PROCESSED_DATA_DIR = os.path.join(DATA_DIR, 'processed')
+
+KAGGLE_DATA_PATH = os.path.join(RAW_DATA_DIR, 'data.csv')
+MY_PLAYLIST_PATH = os.path.join(RAW_DATA_DIR, 'all_my_songs.csv')
+RECOMMENDATIONS_PATH = os.path.join(PROCESSED_DATA_DIR, 'recommendations.csv')
+
+
 # Genre Mapping from your notebook
 GENRE_MAP = {
     'pop': ['pop', 'pop-film', 'power-pop', 'indie-pop', 'synth-pop', 'piano', 'kids', 'study'],
